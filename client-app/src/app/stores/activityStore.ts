@@ -67,6 +67,7 @@ class ActivityStore {
     let activity = this.getActivity(id);
     if (activity) {
       this.activity = activity;
+      return activity;
     } else {
       try {
         this.loadingInitial = true;
@@ -76,6 +77,7 @@ class ActivityStore {
           this.activity = activity;
           this.loadingInitial = false;
         })
+        return activity;
       } catch (error) {
         runInAction(() => {
           this.loadingInitial = false;
