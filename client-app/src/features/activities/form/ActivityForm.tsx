@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { v4 as uuid } from 'uuid';
 import { Button, Form, Grid, GridColumn, Segment } from 'semantic-ui-react';
 import { ActivityFormValues } from '../../../app/models/activity';
 import ActivityStore from '../../../app/stores/activityStore';
@@ -24,7 +25,9 @@ const ActivityForm: React.FC<RouteComponentProps<IDetailParams>> = ({
 
   const {
     submitting,
-    loadActivity
+    loadActivity,
+    createActivity,
+    editActivity
   } = activityStore;
 
   const [activity, setActivity] = useState(new ActivityFormValues());
@@ -42,24 +45,20 @@ const ActivityForm: React.FC<RouteComponentProps<IDetailParams>> = ({
     match.params.id
   ]);
 
-  // const handleSubmit = () => {
-  //   if (activity.id.length === 0) {
-  //     let newActivity = {
-  //       ...activity,
-  //       id: uuid()
-  //     }
-  //     createActivity(newActivity).then(() => history.push(`/activities/${newActivity.id}`));
-  //   }
-  //   else {
-  //     editActivity(activity).then(() => history.push(`/activities/${activity.id}`));
-  //   }
-  // };
-
   const handleFinalFormSubit = (values: any) => {
     const dateAndTime = combineDateAndTime(values.date, values.time);
     const { date, time, ...activity } = values;
     activity.date = dateAndTime;
-    console.log(activity);
+    if (!activity.id) {
+      let newActivity = {
+        ...activity,
+        id: uuid()
+      }
+      createActivity(newActivity);
+    }
+    else {
+      editActivity(activity);
+    }
   }
 
   return (
@@ -127,7 +126,9 @@ const ActivityForm: React.FC<RouteComponentProps<IDetailParams>> = ({
                   type='submit'
                   content='Submit' />
                 <Button
-                  onClick={() => history.push('/activities')}
+                  onClick={activity.id
+                    ? () => history.push(`/activities/${activity.id}`)
+                    : () => history.push('/activities')}
                   disabled={loading}
                   floated='right'
                   type='button'
