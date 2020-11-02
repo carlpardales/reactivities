@@ -1,11 +1,15 @@
 import { action, computed, makeObservable, observable } from "mobx";
 import agent from "../api/agent";
 import { IUser, IUserFormValues } from "../models/user";
+import { RootStore } from "./rootStore";
 
 export default class UserStore {
   user: IUser | null = null;
 
-  constructor() {
+  rootStore: RootStore;
+  constructor(rootStore: RootStore) {
+    this.rootStore = rootStore;
+
     makeObservable(this, {
       user: observable,
       isLoggedIn: computed,
