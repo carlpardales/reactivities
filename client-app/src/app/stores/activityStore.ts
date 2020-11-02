@@ -16,7 +16,7 @@ export default class ActivityStore {
   rootStore: RootStore;
   constructor(rootStore: RootStore) {
     this.rootStore = rootStore;
-    
+
     makeObservable(this, {
       activityRegistry: observable,
       activity: observable,
@@ -46,7 +46,7 @@ export default class ActivityStore {
       const date = activity.date.toISOString().split('T')[0];
       activities[date] = activities[date] ? [...activities[date], activity] : [activity];
       return activities;
-    }, {} as {[key: string]: IActivity[]}));
+    }, {} as { [key: string]: IActivity[] }));
   }
 
   loadActivities = async () => {
@@ -81,7 +81,7 @@ export default class ActivityStore {
         runInAction(() => {
           activity.date = new Date(activity.date);
           this.activity = activity;
-          this.activityRegistry.set(activity.id, activity); 
+          this.activityRegistry.set(activity.id, activity);
           this.loadingInitial = false;
         })
         return activity;
@@ -93,7 +93,7 @@ export default class ActivityStore {
       }
     }
   };
-  
+
   clearActivity = () => {
     this.activity = null;
   };
