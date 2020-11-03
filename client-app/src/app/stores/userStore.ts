@@ -15,7 +15,8 @@ export default class UserStore {
       user: observable,
       isLoggedIn: computed,
       login: action,
-      logout: action
+      logout: action,
+      getUser: action
     })
   }
 
@@ -39,5 +40,16 @@ export default class UserStore {
     this.rootStore.commonStore.setToken(null);
     this.user = null;
     history.push('/');
+  }
+
+  getUser = async () => {
+    try {
+      const user = await agent.User.current();
+      runInAction(() => {
+        this.user = user;
+      })
+    } catch (error) {
+      console.log(error);
+    }
   }
 };
