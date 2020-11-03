@@ -14,7 +14,8 @@ export default class UserStore {
     makeObservable(this, {
       user: observable,
       isLoggedIn: computed,
-      login: action
+      login: action,
+      logout: action
     })
   }
 
@@ -26,11 +27,17 @@ export default class UserStore {
       runInAction(() => {
         this.user = user;
       });
-      console.log(user);
+      this.rootStore.commonStore.setToken(user.token);
       history.push('/activities');
     }
     catch (error) {
       throw error;
     }
+  }
+
+  logout = () => {
+    this.rootStore.commonStore.setToken(null);
+    this.user = null;
+    history.push('/');
   }
 };
