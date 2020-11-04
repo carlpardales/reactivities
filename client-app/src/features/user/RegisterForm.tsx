@@ -26,7 +26,7 @@ const RegisterForm = () => {
           [FORM_ERROR]: error
         }))
       }
-      // validate={validate}
+      validate={validate}
       render={({
         handleSubmit,
         submitting,
@@ -55,7 +55,6 @@ const RegisterForm = () => {
             {submitError && !dirtySinceLastSubmit && (
               <ErrorMessage
                 error={submitError}
-                text={JSON.stringify(submitError.data.errors)}
               />
             )}
             <Button
