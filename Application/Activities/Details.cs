@@ -5,6 +5,7 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Errors;
+using AutoMapper;
 using Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -22,8 +23,10 @@ namespace Application.Activities
         public class Handler : IRequestHandler<Query, ActivityDto>
         {
             private readonly DataContext _context;
-            public Handler(DataContext context)
+            private readonly IMapper _mapper;
+            public Handler(DataContext context, IMapper mapper)
             {
+                _mapper = mapper;
                 _context = context;
             }
 
@@ -38,30 +41,9 @@ namespace Application.Activities
                     throw new RestException(HttpStatusCode.NotFound, new {
                         activity = "Not Found"});
 
+                var activityToReturn = _mapper.Map<Activity, ActivityDto>(activity);
                 
-                var attendees = activity.UserActivities.Select( a => UserActivityToAttendeeDto(a)).ToList();
-                return new ActivityDto
-                {
-                    Id = activity.Id,
-                    Title = activity.Title,
-                    Description = activity.Description,
-                    Category = activity.Category,
-                    Date = activity.Date,
-                    City = activity.City,
-                    Venue = activity.Venue,
-                    Attendees = attendees
-                };
-            }
-
-            private AttendeeDto UserActivityToAttendeeDto(UserActivity userActivity) 
-            {
-                return new AttendeeDto
-                {
-                    Username = userActivity.AppUser.UserName,
-                    DisplayName = userActivity.AppUser.DisplayName,
-                    Image = null,
-                    IsHost = userActivity.IsHost
-                };
+                return activityToReturn;
             }
         }
     }
