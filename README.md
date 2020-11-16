@@ -1,7 +1,7 @@
 # Reactivities
 A social network application built using ASP.NET Core, React (with Typescript) and Mobx following Clean Architecture and CQRS + Mediator pattern.
 
-This is the final project for [Complete guide to building an app with .Net Core and React.](https://www.udemy.com/course/complete-guide-to-building-an-app-with-net-core-and-react/) at Udemy.
+This is the final project for [Complete guide to building an app with .Net Core and React](https://www.udemy.com/course/complete-guide-to-building-an-app-with-net-core-and-react/) at Udemy.
 
 ## Features
 * Login/Logout with authorisation/authentication.
